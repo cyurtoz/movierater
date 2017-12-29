@@ -12,15 +12,15 @@ import org.apache.spark.rdd.RDD
 abstract class LearningModel(val params: LearningParameters) extends Serializable {
 
   def calculateTestMse(): Unit = {
-    println("Test MSE: "+ calculateMSE(params))
+    println("Test MSE: "+ calculateMSE(params.testData))
   }
 
   def calculateTrainingMSE(): Unit = {
-    println("Training MSE: "+ calculateMSE(params))
+    println("Training MSE: "+ calculateMSE(params.trainingData))
   }
 
-  def calculateMSE(learningParameters: LearningParameters): Double = {
-    val labelsAndPredictions = learningParameters.trainingData.map(predict(_, params))
+  def calculateMSE(data: RDD[Movie]): Double = {
+    val labelsAndPredictions = data.map(predict(_, params))
     val testMSE = labelsAndPredictions.map { case (v, p) => math.pow(v - p, 2) }.mean()
     testMSE
   }

@@ -46,7 +46,7 @@ object MoviesCorrelation {
 
   private def printCorrelation(correlMatrix: org.apache.spark.mllib.linalg.Matrix): Unit = {
     for (elem <- correlMatrix.rowIter) {
-      elem.toArray.foreach(x => print(f"$x%1.3f "))
+      elem.toArray.foreach(x => if (x<0)print(f"$x%1.2f ") else print(f"$x%1.3f "))
       print("\n")
     }
   }
